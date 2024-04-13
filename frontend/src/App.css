@@ -1,11 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
-  font-family: sans-serif;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  border-radius: 50%;
+  margin-bottom: 50px;
+  border: 1vh solid #232d3622;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -21,12 +29,31 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 6vh;
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/frontend/src/feeling-lonely-font/FeelingLonely-JRa0n.otf') format('FeelingLonely-JRa0n.otf'),
+       url('/frontend/src/feeling-lonely-font/info.txt') format('info.txt');
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 5em;
+  font-family: Trattatello;
+}
+
+p {
+  line-height: 2em;
+  font-size: 1.2em;
+  font-family: Helvetica;
 }
 
 @keyframes App-logo-spin {
@@ -36,4 +63,53 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.Tabs {
+  width: 80%;
+  height: auto;
+  min-height: 400px;
+  background: #053742;
+  margin: 3.5rem auto 1.5rem;
+  padding: 2rem 1rem;
+  color: #E8F0F2;
+  border-radius: 2rem;
+  @media (max-width: 769px) {
+   padding: 2rem 0;
+  }
+ }
+
+ ul.nav {
+  width: 60%;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #39A2DB;
+  border-radius: 2rem;
+  padding-left: 0px;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
+}
+ul.nav li {
+  width: 50%;
+  padding: 1rem;
+  list-style: none;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.7s;
+  border-bottom-left-radius: 2rem;
+  border-top-left-radius: 2rem;
+}
+ul.nav li:nth-child(2) {
+  border-radius: 0;
+  border-bottom-right-radius: 2rem;
+  border-top-right-radius: 2rem;
+}
+ul.nav li:hover {
+  background: rgba(50, 224, 196, 0.15);
+}
+ul.nav li.active {
+  background: #39A2DB;
 }

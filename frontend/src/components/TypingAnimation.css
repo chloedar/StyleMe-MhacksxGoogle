@@ -1,0 +1,14 @@
+.typing-animation {
+  display: inline-block;
+  position: relative;
+}
+
+/* Animation for the blinking cursor */
+.blink-caret {
+  animation: blink-caret 1s step-end infinite;
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: black; }
+}
