@@ -1,15 +1,38 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 
 const HomePage = () => {
+
+  const [query, setQuery] = useState("");
+
+  function handleQueryUpdate(e) {
+    setQuery(e.target.value);
+  }
+
+  useEffect(() => {
+    document.title = "StyleMe";
+  }, []);
+
   return (
     <div>
-      <header>
-        <h1>My Simple React Home Page</h1>
-      </header>
-      <main>
-        <p>Welcome to my simple React home page! This is a basic example of a React project.</p>
-        <img src="https://via.placeholder.com/300" alt="Placeholder" />
-      </main>
+      <title>
+        StyleMe
+      </title>
+      <body>
+      <div>
+        <header>
+          <h1>Welcome to StyleMe</h1>
+        </header>
+        <form>
+          <input
+            type="text"
+            value={query}
+            onChange={handleQueryUpdate}
+          >
+          </input>
+        </form>
+      </div>
+      </body>
     </div>
   );
 }
