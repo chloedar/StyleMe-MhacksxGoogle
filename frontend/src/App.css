@@ -38,16 +38,21 @@
   color: #61dafb;
 }
 
-@font-face {
+/* @font-face {
   font-family: 'CustomFont';
-  src: url('/frontend/src/feeling-lonely-font/FeelingLonely-JRa0n.otf') format('FeelingLonely-JRa0n.otf'),
-       url('/frontend/src/feeling-lonely-font/info.txt') format('info.txt');
-}
+  src: url('lovely-coffee/FeelingLonely-JRa0n.ttf') format('truetype');
+} */
 
 h1 {
   margin-bottom: 20px;
   font-size: 5em;
-  font-family: Trattatello;
+  font-family: "Sofia", sans-serif;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 4em;
+  font-family: "Sofia", sans-serif;
 }
 
 p {

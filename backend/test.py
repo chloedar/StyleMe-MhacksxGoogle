@@ -1,14 +1,15 @@
-from gemini import wardrobe, websearch
+from gemini import websearch, search_web
 import argparse
 
 def trigger_functions(mode, query, images=None):
     #this function calls the the correct function based off of mode
-    print(query)
+    
     if (mode == 'wardrobe'):
         pass
     else:
-        response = websearch(query)
-        print("successfully called websearch")
+        resp_list, outfit_summary = websearch(query)
+        var = search_web(resp_list)
+        return var
 
     #shopping
     #sustain
@@ -16,9 +17,10 @@ def trigger_functions(mode, query, images=None):
     #web
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-i", help="input query",nargs='+',
-                        type=str)
-    args = parser.parse_args()
-
-    print(trigger_functions("else", str(args.i[0])))
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("-i", help="input query",nargs='+',
+    #                     type=str)
+    # args = parser.parse_args()
+    query = "I want to be styled like this link:https://www.tiktok.com/@wisdm8?lang=en"
+    print(query)
+    print(trigger_functions("else", query))

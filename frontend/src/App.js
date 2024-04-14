@@ -9,6 +9,7 @@ function App() {
   return (
     <div className='App'>
       <header className='App-header'>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia"></link>
         <h1> Hi, I'm styleMe </h1>
         <p> I'm your {' '}
           <Typical
@@ -16,19 +17,20 @@ function App() {
             wrapper="b"
             steps={[
               'fashionista 👑 ',
-              2500,
+              3500,
               'realest friend 😍 ',
-              2500, 
+              3500, 
               'biggest inspiration 🤩 ',
-              2500,
+              3500,
               'Pinterest crush ❤️ ',
-              2500,
+              3500,
               'AI stylist 🤖 ',
-              2500,
+              3500,
             ]}
           />
         </p>
       </header>
+      Scroll down to test it out!
       <Tabs />
     </div>
   );

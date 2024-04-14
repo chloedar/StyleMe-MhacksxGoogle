@@ -9,7 +9,7 @@ import json
 
 import sqlite3
 
-genai.configure(api_key=os.environ['OPENAI_API_KEY'])
+genai.configure(api_key=os.environ['GOOGLE_API_KEY'])
 
 sustainability_items = {
     "items": {
@@ -66,103 +66,112 @@ sustainability_items = {
     }
 }
 
-def wardrobe(query, image_folder):
-    # searches wardrobe with the images provided 
-    model = genai.GenerativeModel('gemini-pro-vision')
+# def wardrobe(query, image_folder):
+#     # searches wardrobe with the images provided 
+#     model = genai.GenerativeModel('gemini-pro-vision')
 
-    query_str = "You are a style expert giving style advice. Help form an outfit based off of the style prompt given with the images provided. If a video link is provided, analyze the video for style reference for recommendation. Style prompt:"+ query 
-    resp_list = []
-    resp_list.append(query)
+#     query_str = "You are a style expert giving style advice. Help form an outfit based off of the style prompt given with the images provided. If a video link is provided, analyze the video for style reference for recommendation. Style prompt:"+ query 
+#     resp_list = []
+#     resp_list.append(query)
 
-    for imag in image_folder:
-        resp_list.append(imag)
+#     for imag in image_folder:
+#         resp_list.append(imag)
 
-    response = model.generate_content(resp_list, stream=True)
-    response.resolve()
-    x = response.text
-    return x
+#     response = model.generate_content(resp_list, stream=True)
+#     response.resolve()
+#     x = response.text
+#     return x
 
 
-def wardrobe_image(query, image_folder):
-    # to output images instead of text description
-    # hard-coding input images for now
-    # Install the Python SDK
-    # a = !ls '/content/drive/MyDrive/mhacksxgoogle/images_compressed/'
-    folder = 'test_images_16/' #currently hardcoded
-    i=0
-    imgs = []
+# def wardrobe_image(query, image_folder):
+#     # to output images instead of text description
+#     # hard-coding input images for now
+#     # Install the Python SDK
+#     # a = !ls '/content/drive/MyDrive/mhacksxgoogle/images_compressed/'
+#     folder = 'test_images_16/' #currently hardcoded
+#     i=0
+#     imgs = []
 
-    for file in os.listdir(folder):
-        if(i<16):
-            #img = PIL.Image.open(f'{folder}{file}')
-            img = Image.open(f'{folder}{file}')
-            imgs.append(img)
-            i=i+1
+#     for file in os.listdir(folder):
+#         if(i<16):
+#             #img = PIL.Image.open(f'{folder}{file}')
+#             img = Image.open(f'{folder}{file}')
+#             imgs.append(img)
+#             i=i+1
 
-    labelled_images={}
-    img_labelling_instruction = "You are an image-labeller. I will provide you images of various items of clothing one-by-one and want you to label each image with a string of upto 3 words. Give me no output besides this label. Include no commas"
-    img_labelling_model = genai.GenerativeModel('gemini-pro-vision')
+#     labelled_images={}
+#     img_labelling_instruction = "You are an image-labeller. I will provide you images of various items of clothing one-by-one and want you to label each image with a string of upto 3 words. Give me no output besides this label. Include no commas"
+#     img_labelling_model = genai.GenerativeModel('gemini-pro-vision')
 
-    for i in range(16):
-        response = img_labelling_model.generate_content([img_labelling_instruction, imgs[i]])
-        print(response.text)
-        a = response.text
-        b =a.strip()
-        labelled_images[b] = imgs[i]
+#     for i in range(16):
+#         response = img_labelling_model.generate_content([img_labelling_instruction, imgs[i]])
+#         print(response.text)
+#         a = response.text
+#         b =a.strip()
+#         labelled_images[b] = imgs[i]
 
-    print("labels successfully generated")
+#     print("labels successfully generated")
 
-    flattened_dict = []
-    for i in labelled_images.keys():
-        flattened_dict.append(i)
-        flattened_dict.append(labelled_images[i])
+#     flattened_dict = []
+#     for i in labelled_images.keys():
+#         flattened_dict.append(i)
+#         flattened_dict.append(labelled_images[i])
 
-    labelled_images_16 = list(labelled_images.keys())[0:16]
-    flattened_dict_32 = flattened_dict[0:32]
+#     labelled_images_16 = list(labelled_images.keys())[0:16]
+#     flattened_dict_32 = flattened_dict[0:32]
 
-    fashion_prompt = f"""You are my best friend and a fashion expert. {query} I have attached pictures of various items from my wardrobe. Could you put together a suitable outfit for me, using only the images provided?
-    Input format: (item description 1, image 1, item description 2, image 2, ... item description n, image n). Output format: [item description a, item description b, item description c]. Please only use outputs from the list: {labelled_images_16}""" 
+#     fashion_prompt = f"""You are my best friend and a fashion expert. {query} I have attached pictures of various items from my wardrobe. Could you put together a suitable outfit for me, using only the images provided?
+#     Input format: (item description 1, image 1, item description 2, image 2, ... item description n, image n). Output format: [item description a, item description b, item description c]. Please only use outputs from the list: {labelled_images_16}""" 
 
-    fashion_model = genai.GenerativeModel('gemini-pro-vision')
-    response = fashion_model.generate_content([fashion_prompt, *flattened_dict_32])
-    print(response.text)
+#     fashion_model = genai.GenerativeModel('gemini-pro-vision')
+#     response = fashion_model.generate_content([fashion_prompt, *flattened_dict_32])
+#     print(response.text)
 
-    #helper function for wardrobe_image function
-    def print_images(a: str):
-        b=a.split(', ')
-        #print(b)
-        #type(b)
-        for i in b:
-            try:
-                i = i.strip()
-                print(i)
-                print(labelled_images[i])
-                result_images.append(labelled_images[i])
-            except:
-                pass
+#     #helper function for wardrobe_image function
+#     def print_images(a: str):
+#         b=a.split(', ')
+#         #print(b)
+#         #type(b)
+#         for i in b:
+#             try:
+#                 i = i.strip()
+#                 print(i)
+#                 print(labelled_images[i])
+#                 result_images.append(labelled_images[i])
+#             except:
+#                 pass
 
-    result_images = []
-    print_images(response.text)
+#     result_images = []
+#     print_images(response.text)
 
-    return result_images
+#     return result_images
 
-def wardrobe_integrated(query, image_folder=None):
-    num_input_images = 6
+def wardrobe_integrated(query, folder='test_images_16/'):
+    num_input_images = 16
     # outputs both images and text description
     # hard-coding input images for now
     # Install the Python SDK
     # a = !ls '/content/drive/MyDrive/mhacksxgoogle/images_compressed/'
-    folder = 'test_images_16/' #currently hardcoded
+    # folder = 'test_images_16/' #currently hardcoded
     i=0
     imgs = []
 
+    #img_address_dict = {}
     for file in os.listdir(folder):
         if(i<num_input_images):
             #img = PIL.Image.open(f'{folder}{file}')
             #print(f'{folder}{file}')
             img = Image.open(f'{folder}{file}')
+            #img_address_dict[file] = img
             imgs.append(img)
+            # print(img)
+            # print(imgs[i])
+            # print(img.filename)
             i=i+1
+            if(i==num_input_images):
+                break
+
+    #print(img_address_dict['denimjeans.jpg'])
             
     labelled_images={}
     img_labelling_instruction = "You are an image-labeller. I will provide you images of various items of clothing one-by-one and want you to label each image with a string of upto 3 words (no commas). Give me no output besides this label. Include no commas"
@@ -191,7 +200,7 @@ def wardrobe_integrated(query, image_folder=None):
         Example JSON: [{"suggestedItems":["red hat", "flare pants", "cowboy boots"],
             "outfitParameter": "This outfit contains a red hat and flare pants. It will look great on you!"
             }] You are my best friend and a fashion expert. %s I have attached pictures of various items from my wardrobe. Could you put together a suitable outfit for me, using only the images provided?
-        Input format: (item description 1, image 1, item description 2, image 2, ... item description n, image n). Please only use outputs from the following list for suggestedItems: %s""" % (query, labelled_images_16)
+        Input format: (item description 1, image 1, item description 2, image 2, ... item description n, image n). Please only use exactly 3 outputs from the following list for suggestedItems: %s""" % (query, labelled_images_16)
 
     fashion_model_2 = genai.GenerativeModel('gemini-pro-vision')
     response = fashion_model_2.generate_content([fashion_prompt_2, *flattened_dict_32])
@@ -207,7 +216,7 @@ def wardrobe_integrated(query, image_folder=None):
                 i = i.strip()
                 #print(i)
                 #print(labelled_images[i])
-                result_images.append(labelled_images[i])
+                result_images.append(labelled_images[i].filename)
             except:
                 pass
 
@@ -224,15 +233,26 @@ def wardrobe_integrated(query, image_folder=None):
     #print(len(json_object))
     #print(json_object)
     print_images(a["suggestedItems"])
-    print(a["suggestedItems"])
-    print(a["outfitParameter"])
+    #print("\n\n\n")
+    #print(a["suggestedItems"])
+    #print("\n\n\n")
+    #print(a["outfitParameter"])
     #print_images(json_object["suggestedItems"])
 
     #print(json_object["outfitParameter"])
 
     # this will print the word output
     # result_images is a list of jpg images that should be displayed to user
-    return result_images
+    #print(result_images)
+
+    output_dictionary = {}
+    output_dictionary["message"] = a["outfitParameter"]
+    z=0
+    for i in result_images:
+        output_dictionary[z]=i
+        z=z+1
+
+    return output_dictionary
 
 def sustain(style_prompt):
     # this function will search database and return links
@@ -244,7 +264,7 @@ def sustain(style_prompt):
             "links": ["https://www.depop.com/products/siennakloss20-super-super-cute-denim-jean/", "https://www.depop.com/products/zayxoxzay-cute-oversized-green-plaid-button-up/" , "https://www.depop.com/products/maasmega-faux-leather-cowboy-boots-boys/"], 
             "outfitParameter": "Ooo have fun! This will look good. Cowboy boots are in style, pair them with denim shorts and a plaid shirt!"
             }]
-        You are a style expert giving style advice. Make an outfit with the items in the indicated JSON based off of the indicated style prompt. JSON: ''' + str(sustainability_items) + '''. . Style prompt: ''' + style_prompt
+        You are a style expert giving style advice. Make an outfit with the items in the indicated JSON based off of the indicated style prompt. Remember, RETURN ONLY ONE SET OF CURLY BRACES IN THE JSON. JSON: ''' + str(sustainability_items) + '''. . Style prompt: ''' + style_prompt
 
     response = model.generate_content(prompt, stream=True)
     response.resolve()
@@ -294,7 +314,9 @@ def websearch(query, image_folder=None):
         Example JSON: [{'suggestedItems':["red hat", "flare pants", "cowboy boots"],
             "outfitParameter": "Ooo have fun! This will look good Cowboy boots are in style, pair them with flare pants!"
             }]
-        You are a style expert giving style advice. If a video link is provided, analyze the video for style reference for recommendation. Help form an outfit based off of the style prompt given and the images if provided. Style prompt: '''
+        You are a style expert giving style advice. If a link is provided, analyze the link for style reference for recommendation. Help form an outfit based off of the style prompt given and the images if provided. Remember, RETURN ONLY ONE SET OF CURLY BRACES IN THE JSON. Style prompt: '''
+    # if video == True:
+
     # queryy = '''The previous text was the style prompt. You are a style expert giving style advice. If a video link was provided, analyze the video for style reference for recommendation. Help form an outfit based off of the style prompt given and the images if provided. 
     #         Return all responses in JSON format, the JSON should include an array of items with a suggested items and a parameter that explains the overall outfit. 
     #         Example JSON: [{'suggestedItems':["red hat", "flare pants", "cowboy boots"],
