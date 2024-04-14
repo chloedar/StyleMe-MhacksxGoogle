@@ -14,7 +14,6 @@ function App() {
         <img src='favicon.ico' alt="Logo"/>
         <h1> Hi, I'm styleMe </h1>
         <p> I'm your {' '}
-        {/* creates the sentence animation */}
           <Typical
             loop={Infinity}
             wrapper="b"
