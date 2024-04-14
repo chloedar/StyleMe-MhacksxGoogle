@@ -14,6 +14,7 @@ function App() {
         <img src='favicon.ico' alt="Logo"/>
         <h1> Hi, I'm styleMe </h1>
         <p> I'm your {' '}
+        {/* creates the sentence animation */}
           <Typical
             loop={Infinity}
             wrapper="b"
@@ -31,11 +32,6 @@ function App() {
             ]}
           />
         </p>
-        {/* <br />
-        <br />
-        <h5> Scroll down to test it out! </h5>
-        <h5> ⬇️ </h5>
-        <img src={myImage} alt="down arrow" /> */}
       </header>
       <Tabs />
     </div>
