@@ -14,6 +14,21 @@ def hello():
 # def receive_user_input():
 #     pass
 
+@app.route('/upload/', methods=['POST'])
+def upload_image():
+    print("inside upload image")
+
+    # TODO: flask.request.files is throwing 400 error
+    image = flask.request.files['image']
+    print("got image")
+    image_name = image.filename
+    print("got image name")
+
+    image.save('../var' + image_name)
+    print("saved image")
+
+    return "", 200
+    
 @app.route('/outfit/', methods=['POST'])
 def trigger_functions(images=None):
     print("inside trigger_functions")
@@ -59,4 +74,4 @@ def trigger_functions(images=None):
     #web
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=8000)

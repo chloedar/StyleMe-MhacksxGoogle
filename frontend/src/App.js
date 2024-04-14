@@ -3,6 +3,7 @@ import './App.css'
 import Typical from 'react-typical';
 import React from 'react';
 import Tabs from './Tabs'
+import myImage from './arrowdown.png';
 // import Typed from 'react-typed';
 
 function App() {
@@ -29,8 +30,12 @@ function App() {
             ]}
           />
         </p>
+        {/* <br />
+        <br />
+        <h5> Scroll down to test it out! </h5>
+        <h5> ⬇️ </h5>
+        <img src={myImage} alt="down arrow" /> */}
       </header>
-      Scroll down to test it out!
       <Tabs />
     </div>
   );

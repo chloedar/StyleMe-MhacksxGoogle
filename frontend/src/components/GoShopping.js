@@ -27,7 +27,7 @@ const GoShopping = () => {
 
     // var mode_to_send = (sustainableBool ? "sustain" : "search_web");
 
-    const url = 'http://127.0.0.1:5000/outfit/';
+    const url = 'http://127.0.0.1:8000/outfit/';
     // onsole.log(mode_to_send)
     console.log(query)
     fetch(url, {
@@ -74,22 +74,24 @@ const GoShopping = () => {
             {/* <p>You can also provide a video link as a style reference.</p> */}
           </div>
           <form onSubmit={handleSubmit}>
-            <p> Type in a request! </p>
             <input
               type="text"
               value={query}
               onChange={handleQueryUpdate}
+              style={{ marginBottom: '20px' }}
             >
             </input>
           </form>
           <div>
             <Button variant="contained" color="primary" onClick={toggleText}>
-              <h3>In Sustainable Mode</h3>
+              <h3>Click to change to normal mode</h3>
             </Button>
           </div>
-          {outputAvailable ? (
-            <p> There is output available </p>
-          ) : null}
+          <div className="gray-box">
+            {outputAvailable ? (
+                <p> There is output available </p>
+            ) : null}
+          </div>
         </div>
       </div>
     );
@@ -108,11 +110,11 @@ const GoShopping = () => {
             {/* <p>You can also provide a video link as a style reference.</p> */}
         </div>
         <form onSubmit={handleSubmit}>
-          <p> Type in a request! </p>
           <input
             type="text"
             value={query}
             onChange={handleQueryUpdate}
+            style={{ marginBottom: '20px' }}
           >
           </input>
           {/* <div className="App">
@@ -123,8 +125,13 @@ const GoShopping = () => {
         </form>
         <div>
           <Button variant="contained" color="primary" onClick={toggleText}>
-            <h3>In Normal Mode</h3>
+            <h3>Click to change to sustainable mode</h3>
           </Button>
+        </div>
+        <div className="gray-box">
+          {outputAvailable ? (
+              <p> There is output available </p>
+          ) : null}
         </div>
       </div>
     </div>

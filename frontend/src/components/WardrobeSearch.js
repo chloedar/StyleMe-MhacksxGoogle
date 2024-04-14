@@ -23,6 +23,20 @@ const WardrobeSearch = () => {
     const updatedFiles = [...files]
     updatedFiles.push(URL.createObjectURL(e.target.files[0]));
     setFiles(updatedFiles);
+    
+    const formData = new FormData()
+    formData.append('image', e.target.files[0]);
+
+    const url = 'http://127.0.0.1:8000/upload/';
+    fetch(url, {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "http://localhost:3001",
+      },
+      body: formData,
+    })
   };
 
   function handleQueryUpdate(e) {
@@ -43,7 +57,7 @@ const WardrobeSearch = () => {
 
     // var wardrobe = "wardrobe";
     
-    const url = 'http://127.0.0.1:5000/outfit/';
+    const url = 'http://127.0.0.1:8000/outfit/';
     fetch(url, {
       mode: 'cors',
       method: 'POST',
@@ -75,30 +89,30 @@ const WardrobeSearch = () => {
             Build an outfit from your wardrobe!
         </h2>
         <div>
-            <p>Upload images of your clothes and type in the style or theme you're looking for.</p>
+            <p>Type in the style or theme you're looking for.</p>
                 {/* <p>You can also provide a video link as a style reference.</p> */}
         </div>
         <div>
           <form onSubmit={handleSubmit}>
-            <p> Type in a request! </p>
               <input 
                   type="text"
                   value={query}
                   onChange={handleQueryUpdate}
+                  style={{ marginBottom: '20px' }}
               >
               </input>
-              <div className="App">
-                  <h3>Upload photos from your wardrobe:</h3>
-                  <input type="file" onChange={handleChange} multiple="multiple"/>
-                  {/* <img src={files}  width="200" alt=""/> */}
-                  {files.map((file) => (<img src={file} width="200" alt=""/>))}
+              <div className="App" style={{ textAlign: 'center' }}>
+                <h3 style={{ display: 'inline-block', marginRight: '10px' }}>Upload photos from your wardrobe:</h3>
+                <input type="file" onChange={handleChange} multiple="multiple" style={{ display: 'inline-block' }} />
+                {/* <img src={files}  width="200" alt=""/> */}
+                {files.map((file) => (<img src={file} width="200" alt="" style={{ display: 'block' }} />))}
               </div>
             </form>
         </div>
-        <div>
-        {outputAvailable ? (
-            <p> There is output available </p>
-          ) : null}
+        <div className="gray-box">
+          {outputAvailable ? (
+              <p> There is output available </p>
+            ) : null}
         </div>
       </div>
     </>

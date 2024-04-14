@@ -24,7 +24,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,7 +73,7 @@ p {
 .Tabs {
   width: 80%;
   height: auto;
-  min-height: 400px;
+  min-height: 600px;
   background: #053742;
   margin: 3.5rem auto 1.5rem;
   padding: 2rem 1rem;
@@ -117,4 +117,15 @@ ul.nav li:hover {
 }
 ul.nav li.active {
   background: #39A2DB;
+}
+
+.gray-box {
+  margin-top: 20px;
+  margin-left: 70px;
+  width: 88%;
+  height: 200px; /* Set the height as needed */
+  background-color: #dce5e7; /* Gray background color */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Add padding inside the box */
+  box-sizing: border-box; /* Include padding and border in the box's total width and height */
 }
