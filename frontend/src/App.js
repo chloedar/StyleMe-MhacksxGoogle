@@ -11,6 +11,7 @@ function App() {
     <div className='App'>
       <header className='App-header'>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia"></link>
+        <img src='favicon.ico' alt="Logo"/>
         <h1> Hi, I'm styleMe </h1>
         <p> I'm your {' '}
           <Typical
