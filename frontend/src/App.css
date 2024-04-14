@@ -123,9 +123,15 @@ ul.nav li.active {
   margin-top: 20px;
   margin-left: 70px;
   width: 88%;
-  height: 200px; /* Set the height as needed */
+  height: 300px; /* Set the height as needed */
   background-color: #dce5e7; /* Gray background color */
   border-radius: 10px; /* Rounded corners */
   padding: 20px; /* Add padding inside the box */
   box-sizing: border-box; /* Include padding and border in the box's total width and height */
+  color: black;
+}
+
+img {
+  width: 100px; /* Set the width of the image */
+  height: auto; /* Maintain the aspect ratio */
 }

@@ -12,7 +12,10 @@ const WardrobeSearch = () => {
   const [files, setFiles] = useState([]);
   const [sustainableBool, setSustainableBool] = useState(true);
   const [outputAvailable, setOutputAvailable] = useState(false);
-  const [mode, setMode] = useState("wardrobe")
+  const [mode, setMode] = useState("wardrobe");
+  const [suggestedItems, setSuggestedItems] = useState([])
+  // const [links, setLinks] = useState([])
+  const [outfitParameters, setOutfitParameters] = useState([]);
 
   const toggleText = () => {
     setSustainableBool(!sustainableBool);
@@ -21,20 +24,17 @@ const WardrobeSearch = () => {
   function handleChange(e) {
     console.log(e.target.files);
     const updatedFiles = [...files]
+    console.log(e.target.files[0]);
     updatedFiles.push(URL.createObjectURL(e.target.files[0]));
     setFiles(updatedFiles);
     
     const formData = new FormData()
-    formData.append('image', e.target.files[0]);
+    formData.append("image", e.target.files[0]);
+    // console.log(formData);
 
     const url = 'http://127.0.0.1:8000/upload/';
     fetch(url, {
-      mode: 'cors',
       method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:3001",
-      },
       body: formData,
     })
   };
@@ -73,7 +73,9 @@ const WardrobeSearch = () => {
     })
     .then((data) => {
       setOutputAvailable(true);
-      // suggestedItems, links (list), and output parameters which is a string
+      // setLinks(data.links)
+      setOutfitParameters(data.outfitParameter)
+      setSuggestedItems(data.suggestedItems)
     }   
     )
     setQuery("");
@@ -110,10 +112,34 @@ const WardrobeSearch = () => {
             </form>
         </div>
         <div className="gray-box">
-          {outputAvailable ? (
-              <p> There is output available </p>
-            ) : null}
+            {outputAvailable ? (
+              <>
+                {outfitParameters && <p>{outfitParameters}</p>}
+                  {suggestedItems.map((filename, index) => (
+                    <div key={`suggested-item-${index}`}>
+                        <img src={'images/' + filename} width="200" alt="" style={{ display: 'block' }} />
+                    </div>
+                  ))}
+              </>
+            ) : (
+              <p>Thinking...</p>
+            )}
         </div>
+        {/* <div className="gray-box">
+          {outputAvailable ? (
+            <div>
+              <p>{outfitParameters}</p>
+              // {(suggestedItems.map((filename) => (<img src={'var/' + filename} width="200" alt="" style={{ display: 'block' }} />)))}
+              {suggestedItems.map((item, index) => (
+                <div key={`suggested-item-${index}`}>
+                  <p>
+                    <img src={'var/' + filename} width="200" alt="" style={{ display: 'block' }} />
+                  </p>
+                </div>
+              ))}
+              </div>
+            ) : <p> Thinking... </p>}
+        </div> */}
       </div>
     </>
   );

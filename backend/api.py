@@ -24,7 +24,7 @@ def upload_image():
     image_name = image.filename
     print("got image name")
 
-    image.save('../var' + image_name)
+    image.save('../frontend/public/images/' + image_name)
     print("saved image")
 
     return "", 200
@@ -45,10 +45,13 @@ def trigger_functions(images=None):
     #this function calls the the correct function based off of mode
     try:
         if (mode == 'wardrobe'):
+            # filenames = flask.request.json.get('filenames')
+            # print(filenames)
             response = wardrobe_integrated(query)
             print("successfully called wardrobe integrated")
             for i in response:
                 print(i)
+            return response
         else:
             print("calling websearch")
             resp_list, outfit_summary = websearch(query)
@@ -59,6 +62,8 @@ def trigger_functions(images=None):
                 print("calling search_web")
                 list_links = search_web(resp_list)
                 print("LIST LINKS: ", list_links)
+                list_links['outfitParameter'] = outfit_summary['outfitParameter']
+                print(list_links)
                 return list_links
             else:
                 print("IN SUSTAIN MODE")

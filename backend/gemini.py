@@ -10,7 +10,7 @@ import json
 import sqlite3
 
 # genai.configure(api_key='AIzaSyCptcp0a4vTQRzXp-HbuWwMDPgK_jN3R-s')
-genai.configure(api_key=os.environ['OPENAI_API_KEY'])
+genai.configure(api_key=os.environ['GOOGLE_API_KEY'])
 
 sustainability_items = {
     "items": {
@@ -147,8 +147,11 @@ sustainability_items = {
 
 #     return result_images
 
-def wardrobe_integrated(query, folder='test_images_16/'):
-    num_input_images = 16
+def wardrobe_integrated(query, folder='../frontend/public/images/'):
+#def wardrobe_integrated(query, folder='../backend/test_images/'):
+    max_num = 16
+    num_input_images = 0
+    #num_input_images = len(os.listdir(folder))
     # outputs both images and text description
     # hard-coding input images for now
     # Install the Python SDK
@@ -159,7 +162,7 @@ def wardrobe_integrated(query, folder='test_images_16/'):
 
     #img_address_dict = {}
     for file in os.listdir(folder):
-        if(i<num_input_images):
+        if(i<max_num):
             #img = PIL.Image.open(f'{folder}{file}')
             #print(f'{folder}{file}')
             img = Image.open(f'{folder}{file}')
@@ -169,10 +172,12 @@ def wardrobe_integrated(query, folder='test_images_16/'):
             # print(imgs[i])
             # print(img.filename)
             i=i+1
-            if(i==num_input_images):
-                break
+            num_input_images=num_input_images+1
+        else:
+            break
 
     #print(img_address_dict['denimjeans.jpg'])
+    print(num_input_images)
             
     labelled_images={}
     img_labelling_instruction = "You are an image-labeller. I will provide you images of various items of clothing one-by-one and want you to label each image with a string of upto 3 words (no commas). Give me no output besides this label. Include no commas"
@@ -217,7 +222,9 @@ def wardrobe_integrated(query, folder='test_images_16/'):
                 i = i.strip()
                 #print(i)
                 #print(labelled_images[i])
-                result_images.append(labelled_images[i].filename)
+                #result_images.append(labelled_images[i].filename)
+                only_filename = labelled_images[i].filename[labelled_images[i].filename.rindex('/')+1:]
+                result_images.append(only_filename)
             except:
                 pass
 
@@ -247,11 +254,19 @@ def wardrobe_integrated(query, folder='test_images_16/'):
     #print(result_images)
 
     output_dictionary = {}
-    output_dictionary["message"] = a["outfitParameter"]
+    output_dictionary["outfitParameter"] = a["outfitParameter"]
     z=0
+    img_list_final = []
+    
     for i in result_images:
-        output_dictionary[z]=i
-        z=z+1
+        img_list_final.append(i)
+
+    output_dictionary["suggestedItems"]=img_list_final
+        # output_dictionary[z]=i
+        # z=z+1
+
+    print("printing final result")
+    print(output_dictionary)
 
     return output_dictionary
 
@@ -287,10 +302,11 @@ def sustain(style_prompt):
     # # print("OUTFIT SUMMARY", outfit_summary)
 
     # return suggestedItemsList, outfit_summary
+# sustain: {"links":["https://www.thredup.com/featured/154093049?department_tags=juniors&referral_code=adwords_pla%2Cadwords_pla&iv_=__iv_p_1_a_19641507037_g__c__w__n_x_d_c_v__l__t__r__x_pla_y_8908102_f_online_o_151141830_z_US_i_en_j__s__e__h_9016852_ii__gg__vi__&gclsrc=aw.ds&gad_source=4&gclid=Cj0KCQjw2uiwBhCXARIsACMvIU2aroiu_fQVENG5mcdy0sYFzsOPsADd5OxF8RmH1HQZfbd-UEOSqeYaAppqEALw_wcB&featured_item=154093049","https://www.depop.com/products/aswithin-silver-chrome-color-shifting-rainbow/"],"outfitParameter":"For a dazzling prom look, go with the sequin dress and platform shoes. The sequins will catch the light beautifully, and the platforms will add height and drama.","suggestedItems":["sequin dress","platform shoes"]}
 
 def search_web(query_items):
     # this function returns a list of links related to the items returned from gemini 
-    list_links = {}
+    list_links = {'links':[], 'suggestedItems':[]}
     for item in query_items:
         # list_links[item] = []
         item_str = item.replace(" ", "+")
@@ -300,6 +316,8 @@ def search_web(query_items):
         # for key in links:
         #     print(key,":", links[key]) 
         list_links[item] = links["items"][0]["link"]
+        list_links['links'].append(links["items"][0]["link"])
+        list_links['suggestedItems'].append(item)
     return list_links
 
 def websearch(query, image_folder=None):
@@ -346,7 +364,8 @@ def websearch(query, image_folder=None):
     for x in output["suggestedItems"]:
         suggestedItemsList.append(x)
 
-    outfit_summary= output["outfitParameter"]
+    outfit_summary = {}
+    outfit_summary['outfitParameter'] = output["outfitParameter"]
 
     # print("RESP_LIST: ", suggestedItemsList)
     # print("OUTFIT SUMMARY", outfit_summary)

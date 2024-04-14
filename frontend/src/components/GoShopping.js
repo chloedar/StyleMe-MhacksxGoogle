@@ -6,16 +6,32 @@ import { Button } from 'react-bootstrap';
 // import "./App.css";     
 
 const GoShopping = () => {
-  // const backgroundColor = "#f1d4ed";
-  // const otherBackgroundColor = "#daf1d4";
   const [query, setQuery] = useState("");
   const [sustainableBool, setSustainableBool] = useState(true);
   const [outputAvailable, setOutputAvailable] = useState(false);
   const [mode, setMode] = useState("sustain");
+  const [suggestedItems, setSuggestedItems] = useState([])
+  const [links, setLinks] = useState([])
+  const [outfitParameters, setOutfitParameters] = useState("");
+
+  useEffect(() => {
+    setMode(sustainableBool ? "sustain" : "search_web");
+  }, [sustainableBool]);
 
   const toggleText = () => {
+    console.log("in toggle text");
+    console.log(sustainableBool);
     setSustainableBool(!sustainableBool);
-    setMode(sustainableBool ? "sustain" : "search_web");
+    // setSustainableBool({false, () => setMode(sustainableBool ? "sustain" : "search_web"), () => console.log(mode); })
+    // this.setState({
+    //   // sustainableBool: !sustainableBool,
+    //   // mode: (sustainableBool ? "sustain" : "search_web"),
+    // })
+
+    // clear the gray box somehow
+    setLinks([]);
+    setSuggestedItems([]);
+    setOutfitParameters("");
   };
 
   function handleQueryUpdate(e) {
@@ -26,6 +42,7 @@ const GoShopping = () => {
     e.preventDefault();
 
     // var mode_to_send = (sustainableBool ? "sustain" : "search_web");
+    console.log(mode);
 
     const url = 'http://127.0.0.1:8000/outfit/';
     // onsole.log(mode_to_send)
@@ -46,7 +63,20 @@ const GoShopping = () => {
     .then((data) => {
       console.log("inside handleSubmit");
       setOutputAvailable(true);
+      // loop through links ["links"]
+      // outfit parameter ==> "outfitParameter"
+      // suggestedItems ==> "suggestedItems" is a list of strings
       // suggestedItems, links (list), and output parameters which is a string
+      if (mode === "sustain") {
+        setLinks(data.links);
+        setOutfitParameters(data.outfitParameter);
+        setSuggestedItems(data.suggestedItems);
+      }
+      if (mode === "search_web") {
+        setLinks(data.links)
+        setOutfitParameters(data.outfitParameter)
+        setSuggestedItems(data.suggestedItems)
+      }
     }   
     )
     setQuery("");
@@ -87,10 +117,39 @@ const GoShopping = () => {
               <h3>Click to change to normal mode</h3>
             </Button>
           </div>
+          {/* <div className="gray-box">
+            {outputAvailable && (
+              <>
+                <p> {outfitParameters} </p>
+                {links.map((link, index) => (
+                  <div key={`link-${index}`}>
+                    <a href={link}>{link}</a>
+                  </div>
+                ))}
+                {suggestedItems.map((item, index) => (
+                  <div key={`item-${index}`}>
+                    <p>{item}</p>
+                  </div>
+                ))}
+              </>
+            )}
+            {!outputAvailable && <p>Thinking...</p>}
+          </div> */}
           <div className="gray-box">
             {outputAvailable ? (
-                <p> There is output available </p>
-            ) : null}
+              <>
+                {outfitParameters && <p>{outfitParameters}</p>}
+                {suggestedItems.map((item, index) => (
+                  <div key={`suggested-item-${index}`}>
+                    <p>
+                      {item} - <a href={links[index]}>{links[index]}</a>
+                    </p>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p>Thinking...</p>
+            )}
           </div>
         </div>
       </div>
@@ -128,10 +187,39 @@ const GoShopping = () => {
             <h3>Click to change to sustainable mode</h3>
           </Button>
         </div>
+        {/* <div className="gray-box">
+          {outputAvailable && (
+            <>
+              <p> {outfitParameters} </p>
+              {links.map((link, index) => (
+                <div key={`link-${index}`}>
+                  <a href={link}>{link}</a>
+                </div>
+              ))}
+              {suggestedItems.map((item, index) => (
+                <div key={`item-${index}`}>
+                  <p>{item}</p>
+                </div>
+              ))}
+            </>
+          )}
+          {!outputAvailable && <p>Thinking...</p>}
+        </div> */}
         <div className="gray-box">
-          {outputAvailable ? (
-              <p> There is output available </p>
-          ) : null}
+            {outputAvailable ? (
+              <>
+                {outfitParameters && <p>{outfitParameters}</p>}
+                {suggestedItems.map((item, index) => (
+                  <div key={`suggested-item-${index}`}>
+                    <p>
+                      {item} - <a href={links[index]}>{links[index]}</a>
+                    </p>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p>Thinking...</p>
+            )}
         </div>
       </div>
     </div>
