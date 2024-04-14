@@ -9,7 +9,7 @@ import json
 
 import sqlite3
 
-# genai.configure(api_key='AIzaSyCptcp0a4vTQRzXp-HbuWwMDPgK_jN3R-s')
+
 genai.configure(api_key=os.environ['GOOGLE_API_KEY'])
 
 sustainability_items = {
